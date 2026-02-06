@@ -12,19 +12,14 @@ def clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
 class EulerToJointNode(Node):
-    """
-    Subscribes to:
-      - /euler_cmd (Vector3: x=roll, y=pitch, z=yaw)
-      - /quat_cmd (Quaternion: x, y, z, w)
-    Publishes /joint_states for yaw_joint, pitch_joint, roll_joint
-    """
+    
 
     def __init__(self) -> None:
         super().__init__("euler_to_joint_node")
 
         self.declare_parameter("publish_rate_hz", 50.0)
 
-        # Match the joint names in your URDF exactly
+        # to maych the joint names in my URDF
         self.joint_names: List[str] = ["yaw_joint", "pitch_joint", "roll_joint"]
         self.q_yaw = 0.0
         self.q_pitch = 0.0
@@ -40,19 +35,21 @@ class EulerToJointNode(Node):
         period = 1.0 / max(1.0, rate)
         self.timer = self.create_timer(period, self._publish)
 
-        self.get_logger().info("Gimbal Node Ready. Use /euler_cmd or /quat_cmd")
+        self.get_logger().info("Gimbal Node Ready")
 
     def _on_euler_cmd(self, msg: Vector3) -> None:
         """Standard Euler input: demonstrates gimbal lock at pitch = +/- 90deg."""
         self.q_roll = float(msg.x)
-        # Clamping pitch is common to prevent 'flipping' in many Euler controllers
+
+        # Clamping pitch to prevent 'flipping'
         self.q_pitch = clamp(float(msg.y), -math.pi / 2.0, math.pi / 2.0)
         self.q_yaw = float(msg.z)
 
     def _on_quat_cmd(self, msg: Quaternion) -> None:
-        """Quaternion input: bypasses the mathematical singularity of gimbal lock."""
-        # Convert Quat to Euler for the joint state motor positions
-        # Note: Scipy uses [x, y, z, w]
+        
+        # Converting Quat to Euler for the joint state
+        # Scipy uses [x, y, z, w] so i had to match that
+
         r = R.from_quat([msg.x, msg.y, msg.z, msg.w])
         euler = r.as_euler('zyx', degrees=False) # Yaw, Pitch, Roll
         

@@ -1,7 +1,4 @@
-# gimbal_lock_demo/launch/demo.launch.py
-
 import os
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import Command
@@ -9,7 +6,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory("gimbal_lock_demo")
+    pkg_share = get_package_share_directory("gimbal_lock")
 
     urdf_xacro_path = os.path.join(pkg_share, "urdf", "gimbalrobot.urdf.xacro")
     rviz_config_path = os.path.join(pkg_share, "rviz", "demo.rviz")

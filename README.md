@@ -5,8 +5,8 @@
 ## 1. Step 1 creating workspace
 
 ```bash
-mkdir -p ~/project2/
-cd ~/project2/
+mkdir -p ~/project_2/
+cd ~/project_2/
 ```
 
 ## 2.  Clone the repo from github
@@ -25,7 +25,7 @@ source install/setup.bash
 ## 4. Run the launch file (in terminal 1)
 
 ```bash
-ros2 launch gimbal_lock_demo demo.launch.py
+ros2 launch gimbal_lock gimbal.launch.py
 ```
 - this should launch rviz
 
@@ -33,7 +33,7 @@ ros2 launch gimbal_lock_demo demo.launch.py
 
 ```bash
 source install/setup.bash
-ros2 run gimbal_lock_demo euler_to_joint_node
+ros2 run gimbal_lock euler_to_joint_node
 ```
 
 ## 6. Open rqt in terminal 3
@@ -46,14 +46,22 @@ rqt
 
 ## 7. For normal rotations
 
-- set y (Pitch) to any value less that 1.57
-- Change the values of x (Roll) and z (Yawn) and observe the motion
+- set y (Pitch) to any value to 0, as shown below
+![Default Position](./images/image1.png)
+- Change the values of x (Roll) and observe the motion
+![Roll Changes](./images/image2.png)
+- Change th z (Yawn) and observe the motion
+![Yawn Change](./images/image3.png)
 - for change in x the robot should rotate about the x axis
 - for change in z the robot should rotate about the z axis
 
 ## 8. For Gimbal Lock 
 - Change the y (Pitch) value to any value (+= 1.57)
+![Pitch changes to 1.57](./images/image4.png)
 - Change the values of z (Yaw) slowly and observe the robot motion
+![Yawn change and pitch at 1.57](./images/image6.png)
 - Reset Yaw to 0
-- Move Roll slowly
+- Change Roll slowly
+![Roll change and pitch at 1.57](./images/image5.png)
 - At Pitch = + or - 1.57 (90 degrees) , Yaw and Roll appear to produce the same rotation (axes align)
+![Yawn and Roll changed and pitch at 1.57](./images/image7.png)
